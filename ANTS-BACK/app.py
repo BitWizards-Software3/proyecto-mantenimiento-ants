@@ -19,7 +19,7 @@ firebase_app = firebase_admin.initialize_app(cred, {
 })
 
 app = FastAPI()
-
+print("Firebase inicializado")
 client = TestClient(app)
 
 def test_crear_gasto():
