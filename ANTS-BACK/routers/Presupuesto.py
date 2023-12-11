@@ -8,6 +8,8 @@ from fastapi import HTTPException
 
 router = APIRouter()
 
+PRESUPUESTO_NODE = 'Presupuesto'
+
 @router.post("/presupuesto/")
 async def crear_Presupuesto(presupuesto: Presupuesto):
     # Verificar que el valor del presupuesto es diferente de 0
@@ -19,7 +21,9 @@ async def crear_Presupuesto(presupuesto: Presupuesto):
 
     presupuesto_dict = presupuesto.dict()    
     
-    ref = db.reference('Presupuesto')
+    # ref = db.reference('Presupuesto') #antes 
+    ref = db.reference(PRESUPUESTO_NODE) #ahora
+
     todos_presupuestos = ref.get() or {}
     
     if any(p.get("fecha") == presupuesto.fecha for p in todos_presupuestos.values()):
@@ -30,12 +34,16 @@ async def crear_Presupuesto(presupuesto: Presupuesto):
 
 @router.get("/presupuestos/")
 async def obtenerPresupuestos():    
-    ref = db.reference('Presupuesto')
+    # ref = db.reference('Presupuesto') #antes 
+    ref = db.reference(PRESUPUESTO_NODE) #ahora
+
     return ref.get()
 
 @router.get("/presupuestos/{fecha}")
 async def obtenerPresupuestos(fecha: str):    
-    ref = db.reference('Presupuesto')
+    # ref = db.reference('Presupuesto') #antes 
+    ref = db.reference(PRESUPUESTO_NODE) #ahora
+
     presupuestos = ref.get()
     
     if presupuestos:
