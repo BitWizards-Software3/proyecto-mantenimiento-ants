@@ -37,21 +37,27 @@ async def obtenerPresupuestos():
     # ref = db.reference('Presupuesto') #antes 
     ref = db.reference(PRESUPUESTO_NODE) #ahora
 
-    return ref.get()
+    # return ref.get()
+    return ref.get() or {}
 
 @router.get("/presupuestos/{fecha}")
 async def obtenerPresupuestos(fecha: str):    
     # ref = db.reference('Presupuesto') #antes 
     ref = db.reference(PRESUPUESTO_NODE) #ahora
 
-    presupuestos = ref.get()
+    presupuestos = ref.get() or {}
     
-    if presupuestos:
-        presupuestos_mes = [p for p in presupuestos.values() if p["fecha"] == fecha]
+    presupuestos_mes = [p for p in presupuestos.values() if p["fecha"] == fecha]
+    return presupuestos_mes or []
+    # presupuestos = ref.get()
+    
+    # if presupuestos:
+    #     presupuestos_mes = [p for p in presupuestos.values() if p["fecha"] == fecha]
         
-        if presupuestos_mes:
-            return presupuestos_mes
-        else:
-            return []
-    else:
-        return []
+    #     if presupuestos_mes:
+    #         return presupuestos_mes
+    #     else:
+    #         return []
+    # else:
+    #     return []
+
