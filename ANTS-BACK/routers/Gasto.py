@@ -6,6 +6,8 @@ from datetime import datetime
 
 router = APIRouter()
     
+GASTO_NODE = 'Gasto'  # Variable para el nodo de la base de datos
+
 @router.post("/gasto/")
 async def crear_gasto(gasto: Gasto):
     gasto_id = uuid4()
@@ -17,7 +19,8 @@ async def crear_gasto(gasto: Gasto):
 
     gasto_dict = gasto.dict()    
     
-    ref = db.reference('Gasto')
+    #ref = db.reference('Gasto')#antes
+    ref = db.reference(GASTO_NODE)
     # Envía el gasto a la base de datos de Firebase bajo el nodo "gastos"
     ref.push(gasto_dict)
     return {"message": "Gasto creado exitosamente"}
@@ -28,7 +31,8 @@ async def obtener_gastos(fecha: str):
     # Convertir la fecha de string a datetime
     fecha = datetime.strptime(fecha, "%Y-%m").date()
 
-    ref = db.reference('Gasto')
+    #ref = db.reference('Gasto') #antes
+    ref = db.reference(GASTO_NODE)
     gastos = ref.get()
     
     if gastos:
